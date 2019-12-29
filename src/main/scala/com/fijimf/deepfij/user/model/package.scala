@@ -12,7 +12,7 @@ import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
 
 package object model {
 
-  val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+  val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSS")
   implicit val dateEncoder: Encoder[DateTime] = Encoder.encodeString.contramap[DateTime](_.toString(formatter))
   implicit val dateDecoder: Decoder[DateTime] = Decoder.decodeString.emap[DateTime](str => {
     Either.catchNonFatal(DateTime.parse(str, formatter)).leftMap(_.getMessage)
