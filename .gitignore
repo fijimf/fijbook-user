@@ -4,3 +4,4 @@
 /target/scala-2.12/classes/
 /target/scala-2.12/test-classes/
 /target/streams/
+/buildinfo.properties
