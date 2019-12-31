@@ -11,6 +11,7 @@ import com.fijimf.deepfij.user.services.UserRepo
 import com.fijimf.deepfij.user.util.ServerInfo
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
+import org.http4s.server.middleware.RequestLogger
 import org.slf4j.{Logger, LoggerFactory}
 
 
@@ -36,6 +37,18 @@ object UserRoutes {
     val dsl: Http4sDsl[F] = new Http4sDsl[F] {}
     import dsl._
     HttpRoutes.of[F] {
+
+      case req@POST -> Root / "user" => {
+        (for {
+          u <- req.as[User]
+          x <- repo.saveUser(u)
+          resp <- Ok(x)
+        } yield {
+          resp
+        }).recoverWith { case thr: Throwable =>
+          InternalServerError(thr.getMessage) }
+      }
+
       case GET -> Root / "status" =>
         for {
           status<-repo.healthcheck.map(isOk=>ServerInfo.fromStatus(isOk))
@@ -136,15 +149,6 @@ object UserRoutes {
         }).recoverWith { case thr: Throwable => InternalServerError(thr.getMessage) }
       }
 
-      case req@POST -> Root / "user" => {
-        (for {
-          u <- req.as[User]
-          x <- repo.saveUser(u)
-          resp <- Ok(x)
-        } yield {
-          resp
-        }).recoverWith { case thr: Throwable => InternalServerError(thr.getMessage) }
-      }
     }
   }
 }

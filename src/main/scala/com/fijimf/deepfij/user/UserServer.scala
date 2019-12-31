@@ -6,7 +6,7 @@ import com.fijimf.deepfij.user.util.Banner
 import doobie.util.transactor.Transactor
 import fs2.Stream
 import org.http4s.server.blaze.BlazeServerBuilder
-import org.http4s.server.middleware.Logger
+import org.http4s.server.middleware.{Logger, RequestLogger}
 import org.http4s.syntax.kleisli._
 import org.http4s.{HttpApp, HttpRoutes}
 

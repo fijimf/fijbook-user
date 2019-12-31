@@ -1,6 +1,5 @@
-package com.fijimf.deepfoj.user.model
+package com.fijimf.deepfij.user.model
 
-import com.fijimf.deepfij.user.model.PasswordInfo
 import io.circe.parser.decode
 import io.circe.syntax._
 import org.apache.commons.codec.digest.DigestUtils

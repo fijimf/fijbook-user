@@ -1,8 +1,7 @@
-package com.fijimf.deepfoj.user.model
+package com.fijimf.deepfij.user.model
 
 import java.util.UUID
 
-import com.fijimf.deepfij.user.model.AuthToken
 import io.circe.parser.decode
 import io.circe.syntax._
 import org.joda.time.DateTime
@@ -47,6 +46,7 @@ class AuthTokenSpec extends FunSpec {
     }
 
   }
+
   describe("An option of authToken") {
     val some: Option[AuthToken] = Some(AuthToken(UUID.randomUUID(), UUID.randomUUID(), new DateTime()))
     val none: Option[AuthToken] = Option.empty[AuthToken]

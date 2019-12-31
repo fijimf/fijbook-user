@@ -1,4 +1,4 @@
-package com.fijimf.deepfoj.user
+package com.fijimf.deepfij.user
 
 import java.util.UUID
 

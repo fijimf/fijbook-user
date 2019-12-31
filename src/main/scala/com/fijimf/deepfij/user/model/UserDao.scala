@@ -10,9 +10,23 @@ import org.joda.time.DateTime
 
 object UserDao {
 
-  implicit val uuidMeta: Meta[UUID] = Meta[String].imap(s => UUID.fromString(s))(uuid => uuid.toString)
-  implicit val localDateTimeMeta: Meta[DateTime] =
-    Meta[Timestamp].imap(ts => new DateTime(ts.toInstant))(dt => new Timestamp(dt.getMillis))
+  implicit val uuidMeta: Meta[UUID] = Meta[String]
+    .imap(s => UUID.fromString(s))(uuid => uuid.toString)
+  implicit val dateTimeMeta: Meta[DateTime] = Meta[Timestamp]
+    .imap(ts => new DateTime(ts.getTime))(dt => new Timestamp(dt.getMillis))
+
+
+  def truncateAuthToken(): doobie.Update0 = {
+    sql""" TRUNCATE TABLE auth_token CASCADE""".update
+  }
+
+  def truncatePasswordInfo(): doobie.Update0 = {
+    sql""" TRUNCATE TABLE password_info CASCADE""".update
+  }
+
+  def truncateUser(): doobie.Update0 = {
+    sql""" TRUNCATE TABLE auth_user CASCADE""".update
+  }
 
   //GET    /authInfo/:providerID/:providerKey => Option[PasswordInfo]
   def getPasswordInfo(id: String, key: String): doobie.Query0[PasswordInfo] = {

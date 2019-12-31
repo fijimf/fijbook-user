@@ -6,6 +6,7 @@ import cats.MonadError
 import cats.effect.Sync
 import com.fijimf.deepfij.user.model.{AuthToken, PasswordInfo, User, UserDao}
 import doobie.implicits._
+import doobie.syntax._
 import doobie.util.transactor.Transactor
 
 class UserRepo[F[_] : Sync](xa: Transactor[F]) {
