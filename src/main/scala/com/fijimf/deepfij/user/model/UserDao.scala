@@ -117,8 +117,23 @@ object UserDao {
          |       email,
          |       avatar_url,
          |       activated)  VALUES (
-         |       ${u.userId}, ${u.providerId}, ${u.providerKey}, ${u.firstName}, ${u.lastName}, ${u.fullName}, ${u.email},${u.avatarURL}, ${u.activated}
+         |       ${u.userId},
+         |       ${u.providerId},
+         |       ${u.providerKey},
+         |       ${u.firstName},
+         |       ${u.lastName},
+         |       ${u.fullName},
+         |       ${u.email},
+         |       ${u.avatarURL},
+         |       ${u.activated}
          |       )
+         |       ON CONFLICT (provider_id, provider_key) DO UPDATE SET
+         |         first_name = ${u.firstName},
+         |         last_name = ${u.lastName},
+         |         full_name = ${u.fullName},
+         |         email = ${u.email},
+         |         avatar_url = ${u.avatarURL},
+         |         activated = ${u.activated}
          |""".stripMargin.update
   }
 }

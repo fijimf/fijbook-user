@@ -38,17 +38,6 @@ object UserRoutes {
     import dsl._
     HttpRoutes.of[F] {
 
-      case req@POST -> Root / "user" => {
-        (for {
-          u <- req.as[User]
-          x <- repo.saveUser(u)
-          resp <- Ok(x)
-        } yield {
-          resp
-        }).recoverWith { case thr: Throwable =>
-          InternalServerError(thr.getMessage) }
-      }
-
       case GET -> Root / "status" =>
         for {
           status<-repo.healthcheck.map(isOk=>ServerInfo.fromStatus(isOk))
@@ -76,6 +65,7 @@ object UserRoutes {
         } yield {
           resp
         }).recoverWith { case thr: Throwable => InternalServerError(thr.getMessage) }
+
       case DELETE -> Root / "authInfo" / id / key =>
         (for {
           i <- repo.deletePasswordInfo(id, key)
@@ -83,7 +73,6 @@ object UserRoutes {
         } yield {
           resp
         })
-
 
       case req@GET -> Root / "token" / "expired" => {
         val m = req.params.get("epochMillis").map(_.toLong).getOrElse(Timestamp.valueOf(LocalDateTime.now()).getTime)
@@ -147,6 +136,17 @@ object UserRoutes {
         } yield {
           resp
         }).recoverWith { case thr: Throwable => InternalServerError(thr.getMessage) }
+      }
+
+      case req@POST -> Root / "user" => {
+        (for {
+          u <- req.as[User]
+          x <- repo.saveUser(u)
+          resp <- Ok(x)
+        } yield {
+          resp
+        }).recoverWith { case thr: Throwable =>
+          InternalServerError(thr.getMessage) }
       }
 
     }

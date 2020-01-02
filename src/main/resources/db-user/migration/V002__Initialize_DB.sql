@@ -12,7 +12,6 @@ CREATE TABLE auth_user
     activated    BOOLEAN     NOT NULL
 );
 
-CREATE UNIQUE INDEX ON auth_user (user_uuid);
 CREATE UNIQUE INDEX ON auth_user (provider_id, provider_key);
 
 CREATE TABLE password_info
